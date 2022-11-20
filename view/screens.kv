@@ -1,0 +1,55 @@
+ScreenManager:
+    StartScreen:
+    AddScreen:
+
+<StartScreen>:
+    name: "start"
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDTopAppBar:
+            title: "Estoque"
+            right_action_items: [["magnify"]]
+
+        MDScrollView:
+            MDList:
+                OneLineListItem:
+                    text: "Produto 1"
+                OneLineListItem:
+                    text: "Produto 2"
+                OneLineListItem:
+                    text: "Produto 3"
+
+        MDFloatingActionButton:
+            icon: "plus"
+            md_bg_color: app.theme_cls.primary_color
+            pos_hint: {"right": 0.99}
+            on_press: root.manager.current = "add"
+
+<AddScreen>:
+    name: "add"
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDTopAppBar:
+            title: "Adicionar"
+            left_action_items: [["arrow-left", lambda x: app.back()]]
+
+        MDScrollView:
+            MDList:
+                MDTextField:
+                    hint_text: "Nome"
+
+                MDTextField:
+                    hint_text: "Preço"
+
+                MDTextField:
+                    hint_text: "Marca"
+
+                MDTextField:
+                    hint_text: "Fornecedor"
+
+        MDRaisedButton:
+            text: "Salvar"
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            size_hint: 1, 0.05
