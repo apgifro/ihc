@@ -1,6 +1,7 @@
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 from kivymd.app import MDApp
+from kivymd.uix.list import OneLineListItem
 
 
 class StartScreen(Screen):
@@ -22,10 +23,18 @@ class Estoque(MDApp):
 
         return self.screen_manager
 
+    def on_start(self):
+        start = self.screen_manager.get_screen("start")
+        for i in range(1, 21):
+            start.ids.list.add_widget(
+                OneLineListItem(text=f"Produto {i}")
+            )
+
     def back(self):
         self.screen_manager.transition = SlideTransition(direction="right")
         self.screen_manager.current = "start"
         self.screen_manager.transition = SlideTransition(direction="left")
 
 
-Estoque().run()
+if __name__ == '__main__':
+    Estoque().run()
