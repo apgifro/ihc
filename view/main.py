@@ -1,7 +1,7 @@
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 from kivymd.app import MDApp
-from kivymd.uix.list import OneLineListItem
+from kivymd.uix.list import OneLineListItem, TwoLineListItem
 from data.data import open_file, save_to_file
 
 
@@ -45,7 +45,9 @@ class Estoque(MDApp):
             print(data)
             for x in range(len(data)):
                 start.ids.list.add_widget(
-                    OneLineListItem(text=f"{data[x][0]}")
+                    TwoLineListItem(text=f"{data[x][0]}",
+                                    secondary_text=f"{data[x][2]}",
+                                    )
                 )
         else:
             start.ids.list.add_widget(
