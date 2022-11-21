@@ -33,18 +33,23 @@ ScreenManager:
         MDScrollView:
             MDList:
                 MDTextField:
+                    id: name
                     hint_text: "Nome"
 
                 MDTextField:
+                    id: price
                     hint_text: "Preço"
 
                 MDTextField:
+                    id: brand
                     hint_text: "Marca"
 
                 MDTextField:
+                    id: supplier
                     hint_text: "Fornecedor"
 
         MDRaisedButton:
             text: "Salvar"
             pos_hint: {"center_x": 0.5, "center_y": 0.5}
             size_hint: 1, 0.05
+            on_release: root.get()
