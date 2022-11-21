@@ -13,6 +13,7 @@ class AddScreen(Screen):
 
 
 class Estoque(MDApp):
+
     def build(self):
         Builder.load_file("screens.kv")
 
