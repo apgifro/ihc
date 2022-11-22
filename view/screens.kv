@@ -32,24 +32,33 @@ ScreenManager:
 
         MDScrollView:
             MDList:
+                padding: 50
+                spacing: 20
                 MDTextField:
                     id: name
                     hint_text: "Nome"
+                    mode: "rectangle"
 
                 MDTextField:
                     id: price
                     hint_text: "Preço"
+                    mode: "rectangle"
 
                 MDTextField:
                     id: brand
                     hint_text: "Marca"
+                    mode: "rectangle"
 
                 MDTextField:
                     id: supplier
                     hint_text: "Fornecedor"
+                    mode: "rectangle"
 
+    MDBoxLayout:
+        padding: 50
+        orientation: "vertical"
         MDRaisedButton:
             text: "Salvar"
-            pos_hint: {"center_x": 0.5, "center_y": 0.5}
-            size_hint: 1, 0.05
+            pos_hint: {"right": 1}
+            size_hint: 0.2, 0
             on_release: root.get()
