@@ -3,7 +3,7 @@
 ## Contribuir
 
 1. Abra o PyCharm
-2. Clique em "Get from VCS"
+2. Clique em _Get from VCS_
 3. Adicione o link do projeto do GitHub
 ```
 https://github.com/apgifro/ihc

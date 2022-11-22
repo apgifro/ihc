@@ -1,3 +1,4 @@
+from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 from kivymd.app import MDApp
@@ -16,6 +17,7 @@ class AddScreen(Screen):
         price = self.ids.price.text
         brand = self.ids.brand.text
         supplier = self.ids.supplier.text
+
         data = open_file()
         if data:
             data_to_save = data + [[name, price, brand, supplier]]
@@ -23,6 +25,19 @@ class AddScreen(Screen):
         else:
             data_to_save = [[name, price, brand, supplier]]
             save_to_file(data_to_save)
+
+        self.ids.name.text = ""
+        self.ids.price.text = ""
+        self.ids.brand.text = ""
+        self.ids.supplier.text = ""
+
+        self.manager.transition = SlideTransition(direction="right")
+        self.manager.current = "start"
+        self.manager.transition = SlideTransition(direction="left")
+
+        app = App.get_running_app()
+        app.on_start()
+
 
 
 class Estoque(MDApp):
@@ -46,13 +61,14 @@ class Estoque(MDApp):
             for x in range(len(data)):
                 start.ids.list.add_widget(
                     TwoLineListItem(text=f"{data[x][0]}",
-                                    secondary_text=f"{data[x][2]}",
+                                    secondary_text=f"{data[x][1]}",
                                     )
                 )
         else:
             start.ids.list.add_widget(
                 OneLineListItem(text=f"Clique no + para adicionar o primeiro produto."),
             )
+
 
     def back(self):
         self.screen_manager.transition = SlideTransition(direction="right")
