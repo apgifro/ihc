@@ -1,0 +1,28 @@
+<SearchScreen>:
+
+    name: "search"
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDTopAppBar:
+            title: "Buscar"
+            left_action_items: [["arrow-left", lambda x: app.back()]]
+
+        MDScrollView:
+            MDList:
+                padding: 50
+                MDTextField:
+                    id: search
+                    hint_text: "Produtos"
+                    mode: "rectangle"
+                    icon_right: "magnify"
+
+    MDBoxLayout:
+        orientation: "vertical"
+        MDScrollView:
+            MDList:
+                id: list
+                OneLineListItem:
+                    text: "Single-line item"
+                OneLineListItem:
+                    text: "Single-line item"

@@ -38,13 +38,17 @@ class AddScreen(Screen):
         app = App.get_running_app()
         app.on_start()
 
+
 class SearchScreen(Screen):
     pass
+
 
 class Estoque(MDApp):
 
     def build(self):
-        Builder.load_file("screens.kv")
+        Builder.load_file("view/start.kv")
+        Builder.load_file("view/add.kv")
+        Builder.load_file("view/search.kv")
 
         self.screen_manager = ScreenManager()
         self.screen_manager.add_widget(StartScreen(name='start'))
