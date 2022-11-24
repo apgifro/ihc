@@ -1,6 +1,7 @@
 ScreenManager:
     StartScreen:
     AddScreen:
+    SearchScreen:
 
 <StartScreen>:
     name: "start"
@@ -9,7 +10,7 @@ ScreenManager:
 
         MDTopAppBar:
             title: "Estoque"
-            right_action_items: [["magnify"]]
+            right_action_items: [["magnify", lambda x: app.search()]]
 
         MDScrollView:
             MDList:
@@ -42,21 +43,26 @@ ScreenManager:
                     id: name
                     hint_text: "Nome"
                     mode: "rectangle"
+                    icon_right: "pencil"
 
                 MDTextField:
                     id: price
                     hint_text: "Preço"
                     mode: "rectangle"
+                    icon_right: "currency-usd"
 
                 MDTextField:
                     id: brand
                     hint_text: "Marca"
                     mode: "rectangle"
+                    icon_right: "domain"
 
                 MDTextField:
                     id: supplier
                     hint_text: "Fornecedor"
                     mode: "rectangle"
+                    icon_right: "cart"
+
 
     MDBoxLayout:
         padding: 50
@@ -66,3 +72,20 @@ ScreenManager:
             pos_hint: {"right": 1}
             size_hint: 0.2, 0
             on_release: root.get()
+
+<SearchScreen>:
+    name: "search"
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDTopAppBar:
+            left_action_items: [["arrow-left", lambda x: app.back()]]
+            MDTextField:
+                id: search_field
+                hint_text: 'Busca'
+                on_text: root.set_list_md_icons(self.text, True)
+                pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                size_hint: (0.125, .1)
+        MDScrollView:
+            MDList:
+                id: list

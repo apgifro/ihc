@@ -38,7 +38,8 @@ class AddScreen(Screen):
         app = App.get_running_app()
         app.on_start()
 
-
+class SearchScreen(Screen):
+    pass
 
 class Estoque(MDApp):
 
@@ -48,6 +49,7 @@ class Estoque(MDApp):
         self.screen_manager = ScreenManager()
         self.screen_manager.add_widget(StartScreen(name='start'))
         self.screen_manager.add_widget(AddScreen(name='add'))
+        self.screen_manager.add_widget(SearchScreen(name='search'))
         self.screen_manager.current = "start"
 
         return self.screen_manager
@@ -69,6 +71,8 @@ class Estoque(MDApp):
                 OneLineListItem(text=f"Clique no + para adicionar o primeiro produto."),
             )
 
+    def search(self):
+        self.screen_manager.current = "search"
 
     def back(self):
         self.screen_manager.transition = SlideTransition(direction="right")
