@@ -12,15 +12,15 @@ https://github.com/apgifro/ihc
 5. Configure o interpretador e _venv_
 6. Instale as dependências
 ```
-pip install -r requirements.txt
+pip install -r requirements/requirements.txt
 ```
 
 ## Interfaces
 
 ### Início
 
-![screen1](/readme/screen1.png)
+![screen1](/readme/start.png)
 
 ### Adicionar
 
-![screen2](/readme/screen2.png)
+![screen2](/readme/add.png)
