@@ -80,6 +80,7 @@ class Estoque(MDApp):
                 MDTextField(
                     pos_hint={"center_x": 0.5, "top": True},
                     size_hint=(0.8, 0.1),
+                    line_color_focus=(1, 1, 1, 1),
                     line_color_normal=(1, 1, 1, 1),
                     text_color_normal=(1, 1, 1, 1),
                     text_color_focus=(1, 1, 1, 1),
