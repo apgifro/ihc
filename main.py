@@ -3,7 +3,7 @@ from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 from kivymd.app import MDApp
 from kivymd.uix.floatlayout import MDFloatLayout
-from kivymd.uix.list import OneLineListItem, TwoLineListItem
+from kivymd.uix.list import OneLineListItem, IconLeftWidget, TwoLineIconListItem
 from kivymd.uix.textfield import MDTextField
 
 from data.data import open_file, save_to_file
@@ -54,7 +54,9 @@ class EditScreen(Screen):
         self.manager.current = "start"
         self.manager.transition = SlideTransition(direction="left")
 
+        app.close()
         app.data_update = open_file()
+        app.data_original = open_file()
         app.on_start()
 
 
@@ -81,7 +83,10 @@ class Estoque(MDApp):
         if self.data_update:
             for x in range(len(self.data_update)):
                 start.ids.list.add_widget(
-                    TwoLineListItem(id=str(x),
+                    TwoLineIconListItem(IconLeftWidget(
+                                        icon="glass-cocktail"
+                                    ),
+                                    id=str(x),
                                     text=f"{self.data_update[x][0]}",
                                     secondary_text=f"{self.data_update[x][1]}",
                                     on_release=self.click
@@ -91,6 +96,8 @@ class Estoque(MDApp):
             start.ids.list.add_widget(
                 OneLineListItem(text=f"Clique no + para adicionar o primeiro produto."),
             )
+
+
 
     def click(self, value):
         self.item_pos = int(value.id)
@@ -138,7 +145,7 @@ class Estoque(MDApp):
                     self.data_update.append(item)
 
         if len(self.data_update) == 0:
-            self.data_update.append(["Sem resultados...", "Faça uma nova busca"])
+            self.data_update.append(["Nenhum resultado encontrado...", "Tente usar palavras-chave diferentes"])
 
         self.on_start()
 
@@ -173,6 +180,11 @@ class Estoque(MDApp):
 
         self.close()
         self.on_start()
+
+        # Alimentos e Bebidas: glass-cocktail
+        # Eletrônicos: cellphone
+        # Casa: home
+        # Roupas: tshirt-crew
 
 
 if __name__ == '__main__':
