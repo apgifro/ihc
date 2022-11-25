@@ -13,21 +13,37 @@ class StartScreen(Screen):
     pass
 
 
-class AddScreen(Screen):
+class EditScreen(Screen):
 
     def get(self):
+
+        app = App.get_running_app()
+
         name = self.ids.name.text
         price = self.ids.price.text
         brand = self.ids.brand.text
         supplier = self.ids.supplier.text
 
         data = open_file()
+        id = 0
         if data:
-            data_to_save = data + [[name, price, brand, supplier]]
-            save_to_file(data_to_save)
+            id = len(data)
+
+        if self.ids.toolbar.title == "Adicionar":
+
+            if data:
+                data_to_save = data + [[name, price, brand, supplier, id]]
+                save_to_file(data_to_save)
+            else:
+                data_to_save = [[name, price, brand, supplier, id]]
+                save_to_file(data_to_save)
+
         else:
-            data_to_save = [[name, price, brand, supplier]]
-            save_to_file(data_to_save)
+            for item in data:
+                print(item)
+                if item[4] == app.item_pos:
+                    data[app.item_pos] = [name, price, brand, supplier, app.item_pos]
+                    save_to_file(data)
 
         self.ids.name.text = ""
         self.ids.price.text = ""
@@ -38,7 +54,7 @@ class AddScreen(Screen):
         self.manager.current = "start"
         self.manager.transition = SlideTransition(direction="left")
 
-        app = App.get_running_app()
+        app.data_update = open_file()
         app.on_start()
 
 
@@ -46,32 +62,45 @@ class Estoque(MDApp):
 
     def build(self):
         Builder.load_file("view/start.kv")
-        Builder.load_file("view/add.kv")
+        Builder.load_file("view/edit.kv")
 
         self.screen_manager = ScreenManager()
         self.screen_manager.add_widget(StartScreen(name='start'))
-        self.screen_manager.add_widget(AddScreen(name='add'))
+        self.screen_manager.add_widget(EditScreen(name='edit'))
         self.screen_manager.current = "start"
 
         self.data_original = open_file()
-        self.data_update = self.data_original[:]
+        self.data_update = open_file()
 
         return self.screen_manager
 
     def on_start(self):
         start = self.screen_manager.get_screen("start")
         start.ids.list.clear_widgets()
+
         if self.data_update:
             for x in range(len(self.data_update)):
                 start.ids.list.add_widget(
-                    TwoLineListItem(text=f"{self.data_update[x][0]}",
+                    TwoLineListItem(id=str(x),
+                                    text=f"{self.data_update[x][0]}",
                                     secondary_text=f"{self.data_update[x][1]}",
+                                    on_release=self.click
                                     )
                 )
         else:
             start.ids.list.add_widget(
                 OneLineListItem(text=f"Clique no + para adicionar o primeiro produto."),
             )
+
+    def click(self, value):
+        self.item_pos = int(value.id)
+        self.screen_manager.current = "edit"
+        edit = self.screen_manager.get_screen("edit")
+        edit.ids.toolbar.title = "Editar"
+        edit.ids.name.text = self.data_original[self.item_pos][0]
+        edit.ids.price.text = self.data_original[self.item_pos][1]
+        edit.ids.brand.text = self.data_original[self.item_pos][2]
+        edit.ids.supplier.text = self.data_original[self.item_pos][3]
 
     def search(self):
 
@@ -119,10 +148,7 @@ class Estoque(MDApp):
         toolbar.left_action_items = []
         toolbar.title = "Estoque"
         toolbar.right_action_items = [["magnify", lambda x: self.search()]]
-        print(self.data_original)
-        print(self.data_update)
         self.data_update = self.data_original[:]
-        print(self.data_update)
         try:
             start.remove_widget(self.search_input)
         except:
@@ -134,6 +160,17 @@ class Estoque(MDApp):
         self.screen_manager.transition = SlideTransition(direction="right")
         self.screen_manager.current = "start"
         self.screen_manager.transition = SlideTransition(direction="left")
+
+        try:
+            edit = self.screen_manager.get_screen("edit")
+            edit.ids.name.text = ""
+            edit.ids.price.text = ""
+            edit.ids.brand.text = ""
+            edit.ids.supplier.text = ""
+            edit.ids.toolbar.title = "Adicionar"
+        except:
+            pass
+
         self.close()
         self.on_start()
 
