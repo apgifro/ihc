@@ -24,3 +24,7 @@ pip install -r requirements/requirements.txt
 ### Adicionar
 
 ![screen2](/readme/add.png)
+
+### Buscar
+
+![screen2](/readme/search.png)
