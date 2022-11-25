@@ -1,8 +1,11 @@
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
+from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition, NoTransition
 from kivymd.app import MDApp
+from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.list import OneLineListItem, TwoLineListItem
+from kivymd.uix.textfield import MDTextField
+
 from data.data import open_file, save_to_file
 
 
@@ -43,6 +46,7 @@ class SearchScreen(Screen):
     pass
 
 
+
 class Estoque(MDApp):
 
     def build(self):
@@ -63,7 +67,6 @@ class Estoque(MDApp):
         start.ids.list.clear_widgets()
         data = open_file()
         if data:
-            print(data)
             for x in range(len(data)):
                 start.ids.list.add_widget(
                     TwoLineListItem(text=f"{data[x][0]}",
@@ -76,12 +79,45 @@ class Estoque(MDApp):
             )
 
     def search(self):
-        self.screen_manager.current = "search"
+
+        start = self.screen_manager.get_screen("start")
+
+        self.search_input = (
+            MDFloatLayout(
+                MDTextField(
+                    pos_hint={"center_x": 0.5, "top": True},
+                    size_hint=(0.8, 0.1),
+                    line_color_normal=(1, 1, 1, 1),
+                    text_color_normal=(1, 1, 1, 1),
+                    text_color_focus=(1, 1, 1, 1),
+                    on_text_validate=self.search_text,
+                ),
+                id="input_search"
+            )
+        )
+        start.add_widget(self.search_input)
+
+        toolbar = start.ids.toolbar
+        toolbar.title = ""
+        toolbar.right_action_items = [["keyboard-return"]]
+        toolbar.left_action_items = [["arrow-left", lambda x: self.close()]]
+
+    def search_text(self, value):
+        text = value.text
+
+    def close(self):
+        start = self.screen_manager.get_screen("start")
+        toolbar = start.ids.toolbar
+        toolbar.left_action_items = []
+        toolbar.title = "Estoque"
+        toolbar.right_action_items = [["magnify", lambda x: self.search()]]
+        start.remove_widget(self.search_input)
 
     def back(self):
         self.screen_manager.transition = SlideTransition(direction="right")
         self.screen_manager.current = "start"
         self.screen_manager.transition = SlideTransition(direction="left")
+        self.close()
         self.on_start()
 
 

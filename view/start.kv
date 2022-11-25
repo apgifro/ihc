@@ -1,13 +1,17 @@
 <StartScreen>:
+
     name: "start"
     MDBoxLayout:
+        id: start_box
         orientation: "vertical"
 
         MDTopAppBar:
+            id: toolbar
             title: "Estoque"
             right_action_items: [["magnify", lambda x: app.search()]]
 
         MDScrollView:
+            id: scroll
             MDList:
                 id: list
 
