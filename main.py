@@ -104,7 +104,10 @@ class Estoque(MDApp):
         toolbar.left_action_items = []
         toolbar.title = "Estoque"
         toolbar.right_action_items = [["magnify", lambda x: self.search()]]
-        start.remove_widget(self.search_input)
+        try:
+            start.remove_widget(self.search_input)
+        except:
+            pass
 
     def back(self):
         self.screen_manager.transition = SlideTransition(direction="right")
