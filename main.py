@@ -1,6 +1,6 @@
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition, NoTransition
+from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 from kivymd.app import MDApp
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.list import OneLineListItem, TwoLineListItem
@@ -53,17 +53,19 @@ class Estoque(MDApp):
         self.screen_manager.add_widget(AddScreen(name='add'))
         self.screen_manager.current = "start"
 
+        self.data_original = open_file()
+        self.data_update = self.data_original[:]
+
         return self.screen_manager
 
     def on_start(self):
         start = self.screen_manager.get_screen("start")
         start.ids.list.clear_widgets()
-        data = open_file()
-        if data:
-            for x in range(len(data)):
+        if self.data_update:
+            for x in range(len(self.data_update)):
                 start.ids.list.add_widget(
-                    TwoLineListItem(text=f"{data[x][0]}",
-                                    secondary_text=f"{data[x][1]}",
+                    TwoLineListItem(text=f"{self.data_update[x][0]}",
+                                    secondary_text=f"{self.data_update[x][1]}",
                                     )
                 )
         else:
@@ -97,7 +99,19 @@ class Estoque(MDApp):
         toolbar.left_action_items = [["arrow-left", lambda x: self.close()]]
 
     def search_text(self, value):
-        text = value.text
+        text = value.text.lower()
+
+        data = self.data_original[:]
+        self.data_update = []
+        if data:
+            for item in data:
+                if text in item[0].lower():
+                    self.data_update.append(item)
+
+        if len(self.data_update) == 0:
+            self.data_update.append(["Sem resultados...", "Faça uma nova busca"])
+
+        self.on_start()
 
     def close(self):
         start = self.screen_manager.get_screen("start")
@@ -105,10 +119,16 @@ class Estoque(MDApp):
         toolbar.left_action_items = []
         toolbar.title = "Estoque"
         toolbar.right_action_items = [["magnify", lambda x: self.search()]]
+        print(self.data_original)
+        print(self.data_update)
+        self.data_update = self.data_original[:]
+        print(self.data_update)
         try:
             start.remove_widget(self.search_input)
         except:
             pass
+        self.on_start()
+
 
     def back(self):
         self.screen_manager.transition = SlideTransition(direction="right")
