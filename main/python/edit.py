@@ -2,6 +2,7 @@ from kivy.app import App
 from kivy.metrics import dp
 from kivy.properties import StringProperty
 from kivy.uix.screenmanager import Screen, SlideTransition
+from kivymd.toast import toast
 from kivymd.uix.list import OneLineIconListItem
 from kivymd.uix.menu import MDDropdownMenu
 
@@ -93,12 +94,16 @@ class EditScreen(Screen):
                 data_to_save = [[icon, name, price, brand, supplier, id]]
                 save_to_file(data_to_save)
 
+            toast("  Adicionado  ")
+
         else:
+            print(self.ids.toolbar.title)
             for item in data:
                 print(item)
                 if item[5] == app.item_pos:
                     data[app.item_pos] = [icon, name, price, brand, supplier, app.item_pos]
                     save_to_file(data)
+            toast("Editado")
 
         self.ids.field.icon_right = "shape"
         self.ids.field.text = ""
@@ -106,6 +111,7 @@ class EditScreen(Screen):
         self.ids.price.text = ""
         self.ids.brand.text = ""
         self.ids.supplier.text = ""
+        self.ids.toolbar.title = "Adicionar"
 
         self.manager.transition = SlideTransition(direction="right")
         self.manager.current = "start"

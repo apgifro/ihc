@@ -1,5 +1,5 @@
 from kivy.clock import Clock
-from kivy.uix.screenmanager import Screen, FadeTransition
+from kivy.uix.screenmanager import Screen
 
 
 class SplashScreen(Screen):
@@ -9,5 +9,5 @@ class SplashScreen(Screen):
         Clock.schedule_once(self.switch_to_home, 1)
 
     def switch_to_home(self, x):
-        self.manager.transition = FadeTransition()
+        # self.manager.transition = FadeTransition()
         self.manager.current = 'start'

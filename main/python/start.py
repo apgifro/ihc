@@ -52,7 +52,7 @@ class Estoque(MDApp):
                 )
         else:
             start.ids.list.add_widget(
-                OneLineListItem(text=f"Clique no + para adicionar o primeiro produto."),
+                OneLineListItem(text=f"Clique no + para adicionar o primeiro produto"),
             )
 
     def click(self, value):
@@ -61,25 +61,26 @@ class Estoque(MDApp):
         edit = self.screen_manager.get_screen("edit")
         edit.ids.toolbar.title = "Editar"
 
-        icon = self.data_original[self.item_pos][0]
+        icon = self.data_update[self.item_pos][0]
 
-        icon_name = "Outro"
         if icon == "home":
             icon_name = "Casa"
         elif icon == "glass-cocktail":
             icon_name = "Alimento e Bebida"
         elif icon == "tshirt-crew":
             icon_name = "Roupas"
-        else:
+        elif icon == "cellphone":
             icon_name = "Eletrônicos"
+        else:
+            icon_name = "Outros"
 
         edit.ids.field.text = icon_name
 
-        edit.ids.field.icon_right = self.data_original[self.item_pos][0]
-        edit.ids.name.text = self.data_original[self.item_pos][1]
-        edit.ids.price.text = self.data_original[self.item_pos][2]
-        edit.ids.brand.text = self.data_original[self.item_pos][3]
-        edit.ids.supplier.text = self.data_original[self.item_pos][4]
+        edit.ids.field.icon_right = self.data_update[self.item_pos][0]
+        edit.ids.name.text = self.data_update[self.item_pos][1]
+        edit.ids.price.text = self.data_update[self.item_pos][2]
+        edit.ids.brand.text = self.data_update[self.item_pos][3]
+        edit.ids.supplier.text = self.data_update[self.item_pos][4]
 
     def search(self):
         start = self.screen_manager.get_screen("start")
@@ -128,6 +129,7 @@ class Estoque(MDApp):
         toolbar.left_action_items = []
         toolbar.title = "Estoque"
         toolbar.right_action_items = [["magnify", lambda x: self.search()]]
+        self.data_original = open_file()
         self.data_update = self.data_original[:]
         try:
             start.remove_widget(self.search_input)
