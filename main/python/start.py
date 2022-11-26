@@ -5,8 +5,9 @@ from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.list import OneLineListItem, IconLeftWidget, TwoLineIconListItem
 from kivymd.uix.textfield import MDTextField
 
-from data.data import open_file, save_to_file
+from data.data import open_file
 from edit import EditScreen
+from splash import SplashScreen
 
 
 class StartScreen(Screen):
@@ -15,17 +16,21 @@ class StartScreen(Screen):
 
 class Estoque(MDApp):
 
+    def __init__(self):
+        super().__init__()
+        self.screen_manager = ScreenManager()
+        self.data_original = open_file()
+        self.data_update = open_file()
+
     def build(self):
+        Builder.load_file("../src/layouts/splash.kv")
         Builder.load_file("../src/layouts/start.kv")
         Builder.load_file("../src/layouts/edit.kv")
 
-        self.screen_manager = ScreenManager()
+        self.screen_manager.add_widget(SplashScreen(name="splash"))
         self.screen_manager.add_widget(StartScreen(name='start'))
         self.screen_manager.add_widget(EditScreen(name='edit'))
-        self.screen_manager.current = "start"
-
-        self.data_original = open_file()
-        self.data_update = open_file()
+        self.screen_manager.current = "splash"
 
         return self.screen_manager
 
@@ -35,7 +40,6 @@ class Estoque(MDApp):
 
         if self.data_update:
             for x in range(len(self.data_update)):
-                print(self.data_update[x])
                 start.ids.list.add_widget(
                     TwoLineIconListItem(IconLeftWidget(
                         icon=self.data_update[x][0]
@@ -78,7 +82,6 @@ class Estoque(MDApp):
         edit.ids.supplier.text = self.data_original[self.item_pos][4]
 
     def search(self):
-
         start = self.screen_manager.get_screen("start")
 
         self.search_input = (
@@ -113,7 +116,9 @@ class Estoque(MDApp):
                     self.data_update.append(item)
 
         if len(self.data_update) == 0:
-            self.data_update.append(["magnify", "Nenhum resultado encontrado", "Tente usar palavras-chave diferentes"])
+            self.data_update.append(["magnify",
+                                     "Nenhum resultado encontrado",
+                                     "Tente usar palavras-chave diferentes"])
 
         self.on_start()
 
@@ -137,6 +142,7 @@ class Estoque(MDApp):
 
         try:
             edit = self.screen_manager.get_screen("edit")
+            edit.ids.field.text = ""
             edit.ids.field.icon_right = "shape"
             edit.ids.name.text = ""
             edit.ids.price.text = ""

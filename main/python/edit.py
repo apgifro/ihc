@@ -15,7 +15,6 @@ class IconListItem(OneLineIconListItem):
 class EditScreen(Screen):
 
     def open(self):
-
         app = App.get_running_app()
         self.screen = app.screen_manager.get_screen("edit")
 
@@ -66,16 +65,12 @@ class EditScreen(Screen):
 
         self.menu.open()
 
-    def menu_callback(self, text_item):
-        print(text_item)
-
     def set_item(self, text__item, icon):
         self.screen.ids.field.text = text__item
         self.screen.ids.field.icon_right = icon
         self.menu.dismiss()
 
     def get(self):
-
         app = App.get_running_app()
 
         icon = self.ids.field.icon_right
@@ -106,6 +101,7 @@ class EditScreen(Screen):
                     save_to_file(data)
 
         self.ids.field.icon_right = "shape"
+        self.ids.field.text = ""
         self.ids.name.text = ""
         self.ids.price.text = ""
         self.ids.brand.text = ""
