@@ -49,12 +49,20 @@
 
     MDBoxLayout:
         padding: 50
+        spacing: 30
         orientation: "vertical"
         MDRaisedButton:
             text: "Salvar"
             pos_hint: {"right": 1}
             size_hint: 0.2, 0
             on_release: root.get()
+
+    MDBoxLayout:
+        id: box_delete
+        padding: 50
+        spacing: 30
+        orientation: "vertical"
+
 
 <IconListItem>
 

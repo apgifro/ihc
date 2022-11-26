@@ -1,11 +1,13 @@
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen, SlideTransition
 from kivymd.app import MDApp
+from kivymd.toast import toast
+from kivymd.uix.button import MDRaisedButton
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.list import OneLineListItem, IconLeftWidget, TwoLineIconListItem
 from kivymd.uix.textfield import MDTextField
 
-from data.data import open_file
+from data.data import open_file, save_to_file
 from edit import EditScreen
 from splash import SplashScreen
 
@@ -82,6 +84,25 @@ class Estoque(MDApp):
         edit.ids.brand.text = self.data_update[self.item_pos][3]
         edit.ids.supplier.text = self.data_update[self.item_pos][4]
 
+        edit.ids.box_delete.add_widget(
+            MDRaisedButton(
+                text="Excluir",
+                pos_hint={"left": 1},
+                size_hint=(0.2, 0),
+                on_release=self.remove,
+                md_bg_color="red"
+            )
+        )
+
+    def remove(self, button):
+        screen = self.screen_manager.current
+        del self.data_original[self.item_pos]
+        save_to_file(self.data_original)
+
+        toast("Excluído")
+
+        self.back()
+
     def search(self):
         start = self.screen_manager.get_screen("start")
 
@@ -124,11 +145,19 @@ class Estoque(MDApp):
         self.on_start()
 
     def close(self):
+
         start = self.screen_manager.get_screen("start")
         toolbar = start.ids.toolbar
         toolbar.left_action_items = []
         toolbar.title = "Estoque"
         toolbar.right_action_items = [["magnify", lambda x: self.search()]]
+
+        try:
+            edit = self.screen_manager.get_screen("edit")
+            edit.ids.box_delete.clear_widgets()
+        except:
+            pass
+
         self.data_original = open_file()
         self.data_update = self.data_original[:]
         try:

@@ -94,12 +94,10 @@ class EditScreen(Screen):
                 data_to_save = [[icon, name, price, brand, supplier, id]]
                 save_to_file(data_to_save)
 
-            toast("  Adicionado  ")
+            toast("Adicionado")
 
         else:
-            print(self.ids.toolbar.title)
             for item in data:
-                print(item)
                 if item[5] == app.item_pos:
                     data[app.item_pos] = [icon, name, price, brand, supplier, app.item_pos]
                     save_to_file(data)
