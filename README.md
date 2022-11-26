@@ -15,16 +15,18 @@ https://github.com/apgifro/ihc
 pip install -r requirements/requirements.txt
 ```
 
-## Interfaces
+## Telas
 
-### Início
+![screen1](/readme/s1.png)
 
-![screen1](/readme/start.png)
+![screen2](/readme/s2.png)
 
-### Adicionar
+![screen2](/readme/s3.png)
 
-![screen2](/readme/add.png)
+![screen2](/readme/s4.png)
 
-### Buscar
+![screen2](/readme/s5.png)
 
-![screen2](/readme/search.png)
+![screen2](/readme/s6.png)
+
+![screen2](/readme/s7.png)
