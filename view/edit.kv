@@ -11,8 +11,16 @@
 
         MDScrollView:
             MDList:
+                id: list_input
                 padding: 50
                 spacing: 20
+
+                MDTextField:
+                    id: field
+                    hint_text: "Categoria"
+                    icon_right: "shape"
+                    readonly: True
+                    on_focus: if self.focus: root.open()
 
                 MDTextField:
                     id: name
@@ -47,3 +55,8 @@
             pos_hint: {"right": 1}
             size_hint: 0.2, 0
             on_release: root.get()
+
+<IconListItem>
+
+    IconLeftWidget:
+        icon: root.icon
