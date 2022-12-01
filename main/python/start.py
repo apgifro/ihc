@@ -94,6 +94,8 @@ class Estoque(MDApp):
             )
         )
 
+        self.item_pos = self.data_original.index(self.data_update[self.item_pos])
+
     def remove(self, button):
         screen = self.screen_manager.current
         del self.data_original[self.item_pos]
@@ -122,25 +124,37 @@ class Estoque(MDApp):
         )
         start.add_widget(self.search_input)
 
-        toolbar = start.ids.toolbar
-        toolbar.title = ""
-        toolbar.right_action_items = [["keyboard-return"]]
-        toolbar.left_action_items = [["arrow-left", lambda x: self.close()]]
+        self.toolbar = start.ids.toolbar
+        self.toolbar.title = ""
+        self.toolbar.right_action_items = [["keyboard-return"]]
+        self.toolbar.left_action_items = [["arrow-left", lambda x: self.close()]]
 
     def search_text(self, value):
         text = value.text.lower()
 
-        data = self.data_original[:]
-        self.data_update = []
-        if data:
-            for item in data:
-                if text in item[1].lower():
-                    self.data_update.append(item)
+        try:
+            self.data_update = self.data_original[:]
+            self.on_start()
+        except:
+            pass
 
-        if len(self.data_update) == 0:
-            self.data_update.append(["magnify",
-                                     "Nenhum resultado encontrado",
-                                     "Tente usar palavras-chave diferentes"])
+        try:
+            data = self.data_original[:]
+            self.data_update = []
+            if data:
+                for item in data:
+                    if text in item[1].lower():
+                        self.data_update.append(item)
+        except:
+            pass
+
+        try:
+            if len(self.data_update) == 0:
+                self.data_update.append(["magnify",
+                                         "Nenhum resultado encontrado",
+                                         "Tente usar palavras-chave diferentes"])
+        except:
+            pass
 
         self.on_start()
 
@@ -159,11 +173,16 @@ class Estoque(MDApp):
             pass
 
         self.data_original = open_file()
-        self.data_update = self.data_original[:]
+        try:
+            self.data_update = self.data_original[:]
+        except:
+            pass
+
         try:
             start.remove_widget(self.search_input)
         except:
             pass
+
         self.on_start()
 
     def back(self):

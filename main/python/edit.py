@@ -99,6 +99,7 @@ class EditScreen(Screen):
         else:
             for item in data:
                 if item[5] == app.item_pos:
+                    print(item[5])
                     data[app.item_pos] = [icon, name, price, brand, supplier, app.item_pos]
                     save_to_file(data)
             toast("Editado")
